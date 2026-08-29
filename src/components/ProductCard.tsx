@@ -1,7 +1,18 @@
 "use client";
 
+<<<<<<< HEAD
 import { formatPrice, type Product } from "@/data/products";
 import { ProductVisual } from "./ProductVisual";
+=======
+import {
+  discountedPrice,
+  formatPrice,
+  isDiscountActive,
+  type Product,
+} from "@/data/products";
+import { ProductVisual } from "./ProductVisual";
+import { DiscountCountdown } from "./DiscountCountdown";
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 
 type ProductCardProps = {
   product: Product;
@@ -9,6 +20,11 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, onOpen }: ProductCardProps) {
+<<<<<<< HEAD
+=======
+  const discounted = isDiscountActive(product);
+
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
   return (
     <article className="group flex flex-col bg-surface-elevated">
       <button
@@ -22,9 +38,31 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
           <h3 className="font-serif text-xs leading-snug text-ink sm:text-base md:text-lg">
             {product.name}
           </h3>
+<<<<<<< HEAD
           <p className="text-[0.65rem] text-ink-muted sm:text-sm">
             {formatPrice(product.price)}
           </p>
+=======
+          <p className="flex flex-wrap items-baseline gap-x-1.5 text-[0.65rem] text-ink-muted sm:text-sm">
+            {discounted ? (
+              <>
+                <span className="text-gold-ink font-semibold">
+                  {formatPrice(discountedPrice(product))}
+                </span>
+                <span className="text-ink-muted line-through">
+                  {formatPrice(product.price)}
+                </span>
+              </>
+            ) : (
+              <span>{formatPrice(product.price)}</span>
+            )}
+          </p>
+          {discounted && product.discountEndsAt ? (
+            <div className="pt-1">
+              <DiscountCountdown endsAt={product.discountEndsAt} compact />
+            </div>
+          ) : null}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
         </div>
       </button>
       <button
@@ -36,4 +74,8 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
       </button>
     </article>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)

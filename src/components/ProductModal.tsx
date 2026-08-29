@@ -2,13 +2,22 @@
 
 import { useEffect, useId, useState } from "react";
 import {
+<<<<<<< HEAD
   categoryLabels,
   formatPrice,
+=======
+  categoryLabel,
+  discountedPrice,
+  formatPrice,
+  isDiscountActive,
+  type Category,
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
   type Product,
   type ProductColor,
 } from "@/data/products";
 import { ProductVisual } from "./ProductVisual";
 import { SparkleIcon } from "./SparkleIcon";
+<<<<<<< HEAD
 
 type ProductModalProps = {
   product: Product | null;
@@ -27,6 +36,23 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   useEffect(() => {
     if (!product) return;
 
+=======
+import { DiscountCountdown } from "./DiscountCountdown";
+
+type ProductModalProps = {
+  product: Product;
+  categories: Category[];
+  onClose: () => void;
+};
+
+export function ProductModal({ product, categories, onClose }: ProductModalProps) {
+  const titleId = useId();
+  const [selectedColor, setSelectedColor] = useState<ProductColor | null>(
+    () => product.colors?.[0] ?? null,
+  );
+
+  useEffect(() => {
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -39,6 +65,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKey);
     };
+<<<<<<< HEAD
   }, [product, onClose]);
 
   if (!product) return null;
@@ -50,6 +77,16 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const message = encodeURIComponent(
     `Hola Destello, me interesa consultar: ${product.name}${colorLabel}`,
   );
+=======
+  }, [onClose]);
+
+  const accent = selectedColor?.hex ?? product.accent;
+  const colorLabel = selectedColor ? ` · color ${selectedColor.name}` : "";
+  const message = encodeURIComponent(
+    `Hola Destello, me interesa consultar: ${product.name}${colorLabel}`,
+  );
+  const discounted = isDiscountActive(product);
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 
   return (
     <div
@@ -71,7 +108,11 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       >
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
           <p className="font-serif text-xs tracking-[0.14em] text-ink-muted uppercase">
+<<<<<<< HEAD
             {categoryLabels[product.category]}
+=======
+            {categoryLabel(product.category, categories)}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
           </p>
           <button
             type="button"
@@ -106,7 +147,29 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
               >
                 {product.name}
               </h2>
+<<<<<<< HEAD
               <p className="mt-1 text-lg text-gold-ink">{formatPrice(product.price)}</p>
+=======
+              <div className="mt-1 flex flex-wrap items-center gap-2">
+                {discounted ? (
+                  <>
+                    <span className="text-lg font-semibold text-gold-ink">
+                      {formatPrice(discountedPrice(product))}
+                    </span>
+                    <span className="text-base text-ink-muted line-through">
+                      {formatPrice(product.price)}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-lg text-gold-ink">{formatPrice(product.price)}</span>
+                )}
+              </div>
+              {discounted && product.discountEndsAt ? (
+                <div className="mt-2">
+                  <DiscountCountdown endsAt={product.discountEndsAt} />
+                </div>
+              ) : null}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
             </div>
 
             <p className="text-sm leading-relaxed text-ink-muted">
@@ -180,4 +243,8 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)

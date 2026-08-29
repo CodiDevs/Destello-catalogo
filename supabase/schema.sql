@@ -1,23 +1,83 @@
+<<<<<<< HEAD
 
+=======
+-- ============================================================
+-- Destello · Esquema del catálogo (idiempotente)
+-- Ejecuta este archivo completo en el SQL Editor de Supabase.
+-- Para bases existentes, también puede correr
+-- supabase/migrations/*_vista-admin.sql
+-- ============================================================
+
+-- ------------------------------------------------------------
+-- Categorías configurables (las gestiona el vendedor en /admin)
+-- ------------------------------------------------------------
+create table if not exists public.categories (
+  id text primary key,
+  label text not null,
+  position int not null default 0,
+  active boolean not null default true
+);
+
+comment on table public.categories is 'Categorías del catálogo. Se inicializa con carteras y termos; el admin puede agregar más.';
+
+alter table public.categories enable row level security;
+
+drop policy if exists "Lectura pública de categorías" on public.categories;
+create policy "Lectura pública de categorías"
+  on public.categories
+  for select
+  to anon, authenticated
+  using (true);
+
+-- Seed por defecto (idempotente: no pisa categorías hechas por el admin)
+insert into public.categories (id, label, position, active) values
+  ('carteras', 'Carteras', 0, true),
+  ('termos', 'Termos', 1, true)
+on conflict (id) do nothing;
+
+-- ------------------------------------------------------------
+-- Productos
+-- ------------------------------------------------------------
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 create table if not exists public.products (
   id text primary key,
   name text not null,
   price numeric(10, 2) not null,
+<<<<<<< HEAD
   category text not null check (category in ('carteras', 'termos', 'novedades', 'ofertas')),
+=======
+  category text not null references public.categories(id),
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
   badge text,
   accent text not null,
   pattern text not null check (pattern in ('quilt', 'stripe', 'dot', 'wave')),
   description text not null,
   details jsonb not null default '[]'::jsonb,
   colors jsonb,
+<<<<<<< HEAD
+=======
+  discount_percent numeric(5, 2) check (discount_percent >= 0 and discount_percent <= 100),
+  discount_ends_at timestamptz,
+  views integer not null default 0,
+  sales integer not null default 0,
+  image_url text,
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
   created_at timestamptz not null default now()
 );
 
 comment on table public.products is 'Catálogo de productos de Destello (carteras, termos, etc).';
 comment on column public.products.details is 'Array de strings, ej: ["Cierre con cremallera", "Correa ajustable"].';
 comment on column public.products.colors is 'Array de objetos {id, name, hex} o null si el producto no tiene variantes de color.';
+<<<<<<< HEAD
 
 
+=======
+comment on column public.products.discount_percent is 'Porcentaje de descuento (0-100). Nulo si el producto no está en oferta.';
+comment on column public.products.discount_ends_at is 'Fin de la oferta. Mientras sea futuro, se muestra el temporizador y el precio tachado.';
+comment on column public.products.views is 'Contador de vistas: +1 por cada clic en el producto. Lo suma la tienda.';
+comment on column public.products.sales is 'Unidades vendidas: lo registra manualmente el vendedor en /admin.';
+comment on column public.products.image_url is 'URL pública de la imagen subida a Supabase Storage; si es nula se usa el visual generado.';
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 
 alter table public.products enable row level security;
 
@@ -28,8 +88,39 @@ create policy "Lectura pública de productos"
   to anon, authenticated
   using (true);
 
+<<<<<<< HEAD
 
 
+=======
+-- ------------------------------------------------------------
+-- Contador de vistas (la tienda lo suma; no requiere compra)
+-- security definer: el anon solo puede ejecutar la función,
+-- nunca actualizar la fila directamente.
+-- ------------------------------------------------------------
+create or replace function public.increment_product_views(p_id text)
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  update public.products set views = views + 1 where id = p_id;
+$$;
+
+revoke execute on function public.increment_product_views(text) from public;
+grant execute on function public.increment_product_views(text) to anon, authenticated;
+
+-- ------------------------------------------------------------
+-- Bucket público para imágenes de producto (Supabase Storage)
+-- Se administra por API, pero insertar así lo crea si falta.
+-- ------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('productos', 'productos', true)
+on conflict (id) do nothing;
+
+-- ------------------------------------------------------------
+-- Seed
+-- ------------------------------------------------------------
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 insert into public.products (id, name, price, category, badge, accent, pattern, description, details, colors)
 values
   (
@@ -128,4 +219,8 @@ values
     '["Capacidad 500 ml", "Acero doble pared", "Asa de transporte"]',
     null
   )
+<<<<<<< HEAD
 on conflict (id) do nothing;
+=======
+on conflict (id) do nothing;
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { BrandMark } from "./BrandMark";
 import { ThemeToggle } from "./ThemeToggle";
@@ -33,19 +34,88 @@ export function SiteHeader() {
         // Si el elemento está visible en el viewport
         if (rect.top < windowHeight && rect.bottom > 0) {
           // Si está en la mitad superior del viewport o si es contacto
+=======
+import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { type Category } from "@/data/products";
+import { BrandMark } from "./BrandMark";
+import { ThemeToggle } from "./ThemeToggle";
+
+export function SiteHeader({ categories }: { categories: Category[] }) {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const [open, setOpen] = useState(false);
+  const [activeScrollKey, setActiveScrollKey] = useState("inicio");
+
+  const navItems = useMemo(() => {
+    return [
+      { key: "inicio", href: "/", label: "Inicio", sectionId: "inicio" },
+      { key: "novedades", href: "/catalogo/novedades", label: "Novedades" },
+      ...categories.map((category) => ({
+        key: category.id,
+        href: `/catalogo/${category.id}`,
+        label: category.label,
+        sectionId: category.id,
+      })),
+      { key: "ofertas", href: "/catalogo/ofertas", label: "Ofertas" },
+      { key: "nosotros", href: "/#nosotros", label: "Nosotros", sectionId: "nosotros" },
+      { key: "contacto", href: "/#contacto", label: "Contacto", sectionId: "contacto" },
+    ];
+  }, [categories]);
+
+  useEffect(() => {
+    if (!isHome) return;
+
+    const handleScroll = () => {
+      const sectionIds = navItems.flatMap((item) => (item.sectionId ? [item.sectionId] : []));
+      let active = "inicio";
+      for (const sectionId of sectionIds) {
+        const element = document.getElementById(sectionId);
+        if (!element) continue;
+        const rect = element.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        if (rect.top < windowHeight && rect.bottom > 0) {
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
           if (rect.top <= windowHeight / 2 || sectionId === "contacto") {
             active = sectionId;
           }
         }
       }
+<<<<<<< HEAD
       
       setActiveSection(active);
+=======
+      setActiveScrollKey(active);
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
     };
 
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
+<<<<<<< HEAD
   }, []);
+=======
+  }, [isHome, navItems]);
+
+  const activeKey = isHome
+    ? activeScrollKey
+    : (navItems.find((item) => item.href === pathname)?.key ?? "inicio");
+
+  const linkFor = (item: (typeof navItems)[number]) => {
+    const isActive = activeKey === item.key || (item.key === "inicio" && pathname === "/");
+    return (
+      <li key={item.key}>
+        <Link
+          href={item.href}
+          className={`transition ${isActive ? "text-gold font-semibold" : "hover:text-gold"}`}
+          aria-current={isActive ? "page" : undefined}
+        >
+          {item.label}
+        </Link>
+      </li>
+    );
+  };
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-surface/90 backdrop-blur-md">
@@ -67,17 +137,30 @@ export function SiteHeader() {
           </svg>
         </button>
 
+<<<<<<< HEAD
         <a
           href="#inicio"
+=======
+        <Link
+          href="/"
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
           className="mx-auto inline-flex flex-col items-center md:mx-0"
           aria-label="Destello inicio"
         >
           <BrandMark compact />
+<<<<<<< HEAD
         </a>
 
         <div className="flex items-center gap-2 sm:gap-3">
           <a
             href="#inicio"
+=======
+        </Link>
+
+        <div className="flex items-center gap-2 sm:gap-3">
+          <a
+            href={isHome ? "#inicio" : "/"}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
             className="hidden items-center gap-2 text-ink-muted transition hover:text-gold md:inline-flex"
             aria-label="Buscar en el catálogo"
           >
@@ -99,7 +182,11 @@ export function SiteHeader() {
           </a>
           <ThemeToggle />
           <a
+<<<<<<< HEAD
             href="#contacto"
+=======
+            href={isHome ? "#contacto" : "/#contacto"}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
             className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-ink transition hover:border-gold hover:text-gold"
             aria-label="Consultar catálogo"
           >
@@ -119,6 +206,7 @@ export function SiteHeader() {
         aria-label="Principal"
       >
         <ul className="mx-auto flex max-w-6xl items-center justify-center gap-8 px-6 py-3 font-serif text-sm tracking-[0.12em] text-ink uppercase">
+<<<<<<< HEAD
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.slice(1);
             return (
@@ -132,6 +220,9 @@ export function SiteHeader() {
               </li>
             );
           })}
+=======
+          {navItems.map(linkFor)}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
         </ul>
       </nav>
 
@@ -142,6 +233,7 @@ export function SiteHeader() {
           aria-label="Móvil"
         >
           <ul className="flex flex-col gap-3 font-serif tracking-[0.1em] text-ink uppercase">
+<<<<<<< HEAD
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
@@ -151,6 +243,13 @@ export function SiteHeader() {
                 >
                   {link.label}
                 </a>
+=======
+            {navItems.map((item) => (
+              <li key={item.key}>
+                <Link href={item.href} className="block py-1" onClick={() => setOpen(false)}>
+                  {item.label}
+                </Link>
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
               </li>
             ))}
           </ul>
@@ -158,4 +257,8 @@ export function SiteHeader() {
       ) : null}
     </header>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)

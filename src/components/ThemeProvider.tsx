@@ -4,8 +4,13 @@ import {
   createContext,
   useCallback,
   useContext,
+<<<<<<< HEAD
   useEffect,
   useState,
+=======
+  useState,
+  type ReactNode,
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 } from "react";
 
 type Theme = "light" | "dark";
@@ -21,6 +26,7 @@ function applyTheme(theme: Theme) {
   document.documentElement.setAttribute("data-theme", theme);
 }
 
+<<<<<<< HEAD
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
 
@@ -34,6 +40,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(preferred);
     applyTheme(preferred);
   }, []);
+=======
+function initialTheme(): Theme {
+  if (typeof document === "undefined") return "light";
+  const fromAttribute = document.documentElement.getAttribute("data-theme");
+  return fromAttribute === "dark" ? "dark" : "light";
+}
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 
   const toggleTheme = useCallback(() => {
     setTheme((current) => {
@@ -57,4 +73,8 @@ export function useTheme() {
     throw new Error("useTheme must be used within ThemeProvider");
   }
   return ctx;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
