@@ -1,6 +1,6 @@
 # Destello
 
-Catálogo web (solo frontend) de **Destello · Everyday Essentials**: carteras, termos y expansión futura.
+Catálogo web de **Destello · Everyday Essentials**: carteras, termos y expansión futura. El catálogo de productos vive en **Supabase** (Postgres); el resto del sitio sigue siendo estático.
 
 ## Stack
 
@@ -8,6 +8,7 @@ Catálogo web (solo frontend) de **Destello · Everyday Essentials**: carteras, 
 - React 19
 - Tailwind CSS 4
 - TypeScript
+- Supabase (Postgres + `@supabase/supabase-js`)
 - Bun
 
 ## Desarrollo
@@ -16,6 +17,8 @@ Catálogo web (solo frontend) de **Destello · Everyday Essentials**: carteras, 
 bun install
 bun run dev
 ```
+
+Copia `.env.local.example` a `.env.local` y completa tus credenciales de Supabase antes de levantar el servidor (sin ellas, el catálogo se muestra vacío).
 
 Abre [http://localhost:3000](http://localhost:3000).
 
@@ -30,8 +33,9 @@ Abre [http://localhost:3000](http://localhost:3000).
 
 ## Contenido
 
-- Productos mock en `src/data/products.ts`
-- Logo en `public/logo-destello.png`
+- Productos en Supabase (tabla `products`, ver `supabase/schema.sql`); tipos y categorías en `src/data/products.ts`
+- Logotipo ilustrado (`BrandMark`) en el header y el hero; `public/logo-destello.png` se usa como favicon
+- Animaciones de aparición al hacer scroll (`ScrollReveal`) en secciones y tarjetas de producto
 - Tema claro / oscuro con `data-theme` (toggle en el header)
 - CTA de producto: consulta por WhatsApp (catálogo, sin checkout)
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { products, type CategoryId, type Product } from "@/data/products";
+import { type CategoryId, type Product } from "@/data/products";
 import { ProductCard } from "./ProductCard";
 import { ProductModal } from "./ProductModal";
 import { ScrollReveal } from "./ScrollReveal";
@@ -22,11 +22,13 @@ function SectionHeading({ title }: { title: string }) {
 function ProductSection({
   id,
   title,
+  products,
   filter,
   onOpen,
 }: {
   id: string;
   title: string;
+  products: Product[];
   filter: (category: CategoryId, badge?: string) => boolean;
   onOpen: (product: Product) => void;
 }) {
@@ -58,7 +60,7 @@ function ProductSection({
   );
 }
 
-export function ProductCatalog() {
+export function ProductCatalog({ products }: { products: Product[] }) {
   const [selected, setSelected] = useState<Product | null>(null);
   const close = useCallback(() => setSelected(null), []);
 
@@ -71,24 +73,28 @@ export function ProductCatalog() {
         <ProductSection
           id="novedades"
           title="Shop New"
+          products={products}
           filter={(_c, badge) => badge === "Nuevo" || badge === "Best seller"}
           onOpen={setSelected}
         />
         <ProductSection
           id="carteras"
           title="Carteras"
+          products={products}
           filter={(c) => c === "carteras"}
           onOpen={setSelected}
         />
         <ProductSection
           id="termos"
           title="Termos"
+          products={products}
           filter={(c) => c === "termos"}
           onOpen={setSelected}
         />
         <ProductSection
           id="ofertas"
           title="Ofertas"
+          products={products}
           filter={(_c, badge) => badge === "Oferta"}
           onOpen={setSelected}
         />

@@ -6,8 +6,13 @@ import { PromoBanner } from "@/components/PromoBanner";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Welcome } from "@/components/Welcome";
+import { getProducts } from "@/lib/getProducts";
 
-export default function Home() {
+// Server Component: la lectura a Supabase corre en el servidor, así que las
+// credenciales nunca viajan al navegador. Ver src/lib/getProducts.ts.
+export default async function Home() {
+  const products = await getProducts();
+
   return (
     <>
       <AnnouncementBar />
@@ -16,7 +21,7 @@ export default function Home() {
         <Hero />
         <CategoryGrid />
         <Welcome />
-        <ProductCatalog />
+        <ProductCatalog products={products} />
         <PromoBanner />
       </main>
       <SiteFooter />
