@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+:root {
+  --blush: #f8d5de;
+  --blush-deep: #efb4c4;
+  --blush-soft: #fdf0f3;
+  --gold: #c9a227;
+  --gold-soft: #e0c56a;
+  --gold-ink: #8a6b14;
+  --cream: #f7efe6;
+  --ink: #2a1f24;
+  --ink-muted: #6b5560;
+  --surface: #fffafb;
+  --surface-elevated: #ffffff;
+  --border: #f0c9d4;
+  --announcement: #f3e8dc;
+  --footer: #efb4c4;
+  --sparkle: rgba(201, 162, 39, 0.35);
+  --background: var(--blush-soft);
+  --foreground: var(--ink);
+  --hero-bg: linear-gradient(
+    165deg,
+    #fdf0f3 0%,
+    #f8d5de 45%,
+    #f3c5d2 100%
+  );
+}
+
+html[data-theme="dark"] {
+  --blush: #5c3a46;
+  --blush-deep: #7a4d5c;
+  --blush-soft: #2a1c22;
+  --gold: #e0c56a;
+  --gold-soft: #f0d98a;
+  --gold-ink: #f5e6b0;
+  --cream: #3a2a30;
+  --ink: #f8eef1;
+  --ink-muted: #c9b0ba;
+  --surface: #23181d;
+  --surface-elevated: #2f2228;
+  --border: #6b4554;
+  --announcement: #3a2a30;
+  --footer: #4a303a;
+  --sparkle: rgba(224, 197, 106, 0.4);
+  --background: #1a1216;
+  --foreground: var(--ink);
+  --hero-bg: linear-gradient(
+    165deg,
+    #2a1c22 0%,
+    #3d2830 50%,
+    #4a303a 100%
+  );
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-blush: var(--blush);
+  --color-blush-deep: var(--blush-deep);
+  --color-blush-soft: var(--blush-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-ink: var(--gold-ink);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border);
+  --color-announcement: var(--announcement);
+  --color-footer: var(--footer);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
+  --font-script: var(--font-great-vibes);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+  min-height: 100%;
+}
+
+::selection {
+  background: var(--blush-deep);
+  color: var(--ink);
+}
+
+.sparkle-field {
+  background-image:
+    radial-gradient(circle at 12% 18%, var(--sparkle) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 78% 22%, var(--sparkle) 0 1px, transparent 2px),
+    radial-gradient(circle at 28% 72%, var(--sparkle) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 88% 68%, var(--sparkle) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 55% 40%, var(--sparkle) 0 1px, transparent 2px),
+    radial-gradient(circle at 40% 88%, var(--sparkle) 0 1.3px, transparent 2px);
+}
+
+.hero-wash {
+  background: var(--hero-bg);
+}
+
+.pattern-quilt {
+  background-image:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.25) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.25) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.25) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.25) 75%);
+  background-size: 24px 24px;
+  background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+}
+
+.pattern-stripe {
+  background-image: repeating-linear-gradient(
+    -28deg,
+    transparent,
+    transparent 8px,
+    rgba(255, 255, 255, 0.22) 8px,
+    rgba(255, 255, 255, 0.22) 16px
+  );
+}
+
+.pattern-dot {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.35) 1.5px,
+    transparent 1.6px
+  );
+  background-size: 14px 14px;
+}
+
+.pattern-wave {
+  background-image: repeating-radial-gradient(
+    circle at 0 0,
+    transparent 0,
+    transparent 10px,
+    rgba(255, 255, 255, 0.18) 10px,
+    rgba(255, 255, 255, 0.18) 12px
+  );
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--tilt, -6deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--tilt, -6deg));
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.animate-float {
+  animation: float-soft 5.5s ease-in-out infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s ease-out both;
+}
+
+.animate-twinkle {
+  animation: twinkle 2.8s ease-in-out infinite;
+}
+
+.washi-tape {
+  background: linear-gradient(
+    90deg,
+    var(--gold-soft) 0%,
+    var(--gold) 50%,
+    var(--gold-soft) 100%
+  );
+  opacity: 0.85;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-fade-up,
+  .animate-twinkle {
+    animation: none;
+  }
+}
