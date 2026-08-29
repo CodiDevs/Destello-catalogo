@@ -1,7 +1,10 @@
+import { ScrollReveal } from "./ScrollReveal";
+
 export function PromoBanner() {
   return (
     <section className="mx-auto grid max-w-6xl gap-0 px-4 pb-16 sm:px-6 lg:grid-cols-2">
-      <div
+      <ScrollReveal
+        delay={60}
         className="min-h-[280px] pattern-dot"
         style={{
           backgroundColor: "#e8a0b5",
@@ -9,9 +12,9 @@ export function PromoBanner() {
             "radial-gradient(rgba(255,255,255,0.35) 1.5px, transparent 1.6px), linear-gradient(145deg,#f2b8c6,#c9a86c)",
           backgroundSize: "14px 14px, auto",
         }}
-        aria-hidden
+        aria-hidden={true}
       />
-      <div className="flex flex-col items-start justify-center gap-4 border border-border bg-surface-elevated p-8 sm:p-12">
+      <ScrollReveal delay={140} className="flex flex-col items-start justify-center gap-4 border border-border bg-surface-elevated p-8 sm:p-12">
         <p className="font-script text-3xl text-blush-deep sm:text-4xl">
           un destello especial
         </p>
@@ -25,7 +28,7 @@ export function PromoBanner() {
         >
           Shop now
         </a>
-      </div>
+      </ScrollReveal>
     </section>
   );
 }

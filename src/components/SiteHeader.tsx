@@ -1,13 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { BrandMark } from "./BrandMark";
 import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
   { href: "#inicio", label: "Inicio" },
-  { href: "#catalogo", label: "Novedades" },
+  { href: "#novedades", label: "Novedades" },
   { href: "#carteras", label: "Carteras" },
   { href: "#termos", label: "Termos" },
   { href: "#nosotros", label: "Nosotros" },
@@ -16,6 +16,36 @@ const navLinks = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("inicio");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["inicio", "novedades", "carteras", "termos", "ofertas", "nosotros", "contacto"];
+      let active = "inicio";
+      
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (!element) continue;
+        
+        const rect = element.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Si el elemento está visible en el viewport
+        if (rect.top < windowHeight && rect.bottom > 0) {
+          // Si está en la mitad superior del viewport o si es contacto
+          if (rect.top <= windowHeight / 2 || sectionId === "contacto") {
+            active = sectionId;
+          }
+        }
+      }
+      
+      setActiveSection(active);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-surface/90 backdrop-blur-md">
@@ -39,27 +69,23 @@ export function SiteHeader() {
 
         <a
           href="#inicio"
-          className="hidden items-center gap-2 text-ink-muted transition hover:text-gold md:inline-flex"
-          aria-label="Buscar en el catálogo"
+          className="mx-auto inline-flex flex-col items-center md:mx-0"
+          aria-label="Destello inicio"
         >
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6">
-            <circle cx="11" cy="11" r="6.5" />
-            <path d="m16 16 3.5 3.5" />
-          </svg>
+          <BrandMark compact />
         </a>
 
-        <Link href="/" className="mx-auto flex flex-col items-center md:mx-0">
-          <Image
-            src="/logo-destello.png"
-            alt="Destello"
-            width={220}
-            height={90}
-            priority
-            className="h-14 w-auto object-contain sm:h-16"
-          />
-        </Link>
-
         <div className="flex items-center gap-2 sm:gap-3">
+          <a
+            href="#inicio"
+            className="hidden items-center gap-2 text-ink-muted transition hover:text-gold md:inline-flex"
+            aria-label="Buscar en el catálogo"
+          >
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <circle cx="11" cy="11" r="6.5" />
+              <path d="m16 16 3.5 3.5" />
+            </svg>
+          </a>
           <a
             href="https://instagram.com"
             target="_blank"
@@ -93,16 +119,19 @@ export function SiteHeader() {
         aria-label="Principal"
       >
         <ul className="mx-auto flex max-w-6xl items-center justify-center gap-8 px-6 py-3 font-serif text-sm tracking-[0.12em] text-ink uppercase">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="transition hover:text-gold"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.href.slice(1);
+            return (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className={`transition ${isActive ? "text-gold font-semibold" : "hover:text-gold"}`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 

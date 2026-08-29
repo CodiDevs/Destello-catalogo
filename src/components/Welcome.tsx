@@ -1,10 +1,12 @@
+import { ScrollReveal } from "./ScrollReveal";
+
 export function Welcome() {
   return (
     <section
       id="nosotros"
       className="border-y border-border bg-surface px-4 py-16 text-center sm:px-6 sm:py-20"
     >
-      <div className="mx-auto max-w-2xl animate-fade-up">
+      <ScrollReveal className="mx-auto max-w-2xl" delay={120}>
         <p className="font-serif text-sm tracking-[0.2em] text-ink-muted uppercase">
           Bienvenida a
         </p>
@@ -23,7 +25,7 @@ export function Welcome() {
         >
           Leer más
         </a>
-      </div>
+      </ScrollReveal>
     </section>
   );
 }

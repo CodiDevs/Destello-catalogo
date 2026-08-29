@@ -1,4 +1,5 @@
-import Image from "next/image";
+import Link from "next/link";
+import { BrandMark } from "./BrandMark";
 import { SparkleIcon } from "./SparkleIcon";
 
 function Polaroid({
@@ -50,15 +51,14 @@ export function Hero() {
         <Polaroid label="Carteras" tilt="-7deg" delay="0s" side="left" />
         <Polaroid label="Termos" tilt="6deg" delay="0.6s" side="right" />
 
-        <div className="animate-fade-up relative z-10 flex max-w-xl flex-col items-center gap-5">
-          <Image
-            src="/logo-destello.png"
-            alt="Destello Everyday Essentials"
-            width={360}
-            height={150}
-            priority
-            className="h-24 w-auto object-contain drop-shadow-sm sm:h-32"
-          />
+        <div className="animate-fade-up relative z-10 flex max-w-2xl flex-col items-center gap-5">
+          <Link
+            href="#inicio"
+            className="inline-flex items-center justify-center rounded-full transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            aria-label="Volver al inicio"
+          >
+            <BrandMark />
+          </Link>
           <p className="font-serif text-lg text-ink-muted sm:text-xl">
             es hora de{" "}
             <span className="font-script text-3xl text-gold sm:text-4xl">

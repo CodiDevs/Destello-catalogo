@@ -85,7 +85,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           </button>
         </div>
 
-        <div className="overflow-y-auto overscroll-contain">
+        <div className="product-modal-scroll overflow-y-auto overscroll-contain">
           <ProductVisual
             product={product}
             accent={accent}

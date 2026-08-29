@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { products, type CategoryId, type Product } from "@/data/products";
 import { ProductCard } from "./ProductCard";
 import { ProductModal } from "./ProductModal";
+import { ScrollReveal } from "./ScrollReveal";
 import { SparkleIcon } from "./SparkleIcon";
 
 function SectionHeading({ title }: { title: string }) {
@@ -43,14 +44,14 @@ function ProductSection({
 
   return (
     <section id={id} className="scroll-mt-28">
-      <SectionHeading title={title} />
+      <ScrollReveal delay={80}>
+        <SectionHeading title={title} />
+      </ScrollReveal>
       <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 lg:grid-cols-4">
-        {items.map((product) => (
-          <ProductCard
-            key={`${id}-${product.id}`}
-            product={product}
-            onOpen={onOpen}
-          />
+        {items.map((product, index) => (
+          <ScrollReveal key={`${id}-${product.id}`} delay={index * 60} className="h-full">
+            <ProductCard product={product} onOpen={onOpen} />
+          </ScrollReveal>
         ))}
       </div>
     </section>
