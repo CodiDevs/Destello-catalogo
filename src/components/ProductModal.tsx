@@ -1,43 +1,18 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
 import {
-<<<<<<< HEAD
-  categoryLabels,
-  formatPrice,
-=======
   categoryLabel,
   discountedPrice,
   formatPrice,
   isDiscountActive,
   type Category,
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
   type Product,
   type ProductColor,
 } from "@/data/products";
+import { useEffect, useId, useState } from "react";
+import { DiscountCountdown } from "./DiscountCountdown";
 import { ProductVisual } from "./ProductVisual";
 import { SparkleIcon } from "./SparkleIcon";
-<<<<<<< HEAD
-
-type ProductModalProps = {
-  product: Product | null;
-  onClose: () => void;
-};
-
-export function ProductModal({ product, onClose }: ProductModalProps) {
-  const titleId = useId();
-  const [selectedColor, setSelectedColor] = useState<ProductColor | null>(null);
-
-  useEffect(() => {
-    if (!product) return;
-    setSelectedColor(product.colors?.[0] ?? null);
-  }, [product]);
-
-  useEffect(() => {
-    if (!product) return;
-
-=======
-import { DiscountCountdown } from "./DiscountCountdown";
 
 type ProductModalProps = {
   product: Product;
@@ -52,7 +27,6 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
   );
 
   useEffect(() => {
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -65,19 +39,6 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKey);
     };
-<<<<<<< HEAD
-  }, [product, onClose]);
-
-  if (!product) return null;
-
-  const accent = selectedColor?.hex ?? product.accent;
-  const colorLabel = selectedColor
-    ? ` · color ${selectedColor.name}`
-    : "";
-  const message = encodeURIComponent(
-    `Hola Destello, me interesa consultar: ${product.name}${colorLabel}`,
-  );
-=======
   }, [onClose]);
 
   const accent = selectedColor?.hex ?? product.accent;
@@ -86,7 +47,6 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
     `Hola Destello, me interesa consultar: ${product.name}${colorLabel}`,
   );
   const discounted = isDiscountActive(product);
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 
   return (
     <div
@@ -108,11 +68,7 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
       >
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
           <p className="font-serif text-xs tracking-[0.14em] text-ink-muted uppercase">
-<<<<<<< HEAD
-            {categoryLabels[product.category]}
-=======
             {categoryLabel(product.category, categories)}
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
           </p>
           <button
             type="button"
@@ -141,15 +97,9 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
                   {product.badge}
                 </span>
               ) : null}
-              <h2
-                id={titleId}
-                className="font-serif text-2xl text-ink sm:text-3xl"
-              >
+              <h2 id={titleId} className="font-serif text-2xl text-ink sm:text-3xl">
                 {product.name}
               </h2>
-<<<<<<< HEAD
-              <p className="mt-1 text-lg text-gold-ink">{formatPrice(product.price)}</p>
-=======
               <div className="mt-1 flex flex-wrap items-center gap-2">
                 {discounted ? (
                   <>
@@ -169,12 +119,9 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
                   <DiscountCountdown endsAt={product.discountEndsAt} />
                 </div>
               ) : null}
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
             </div>
 
-            <p className="text-sm leading-relaxed text-ink-muted">
-              {product.description}
-            </p>
+            <p className="text-sm leading-relaxed text-ink-muted">{product.description}</p>
 
             {product.colors && product.colors.length > 0 ? (
               <fieldset>
@@ -199,7 +146,9 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
                       >
                         <span
                           className={`h-5 w-5 rounded-full border ${
-                            selected ? "ring-2 ring-gold ring-offset-2 ring-offset-surface-elevated" : "border-black/10"
+                            selected
+                              ? "ring-2 ring-gold ring-offset-2 ring-offset-surface-elevated"
+                              : "border-black/10"
                           }`}
                           style={{ backgroundColor: color.hex }}
                           aria-hidden
@@ -243,8 +192,4 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
       </div>
     </div>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)

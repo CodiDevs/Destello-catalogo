@@ -1,40 +1,6 @@
 "use client";
 
 import Link from "next/link";
-<<<<<<< HEAD
-import { useEffect, useState } from "react";
-import { BrandMark } from "./BrandMark";
-import { ThemeToggle } from "./ThemeToggle";
-
-const navLinks = [
-  { href: "#inicio", label: "Inicio" },
-  { href: "#novedades", label: "Novedades" },
-  { href: "#carteras", label: "Carteras" },
-  { href: "#termos", label: "Termos" },
-  { href: "#nosotros", label: "Nosotros" },
-  { href: "#contacto", label: "Contacto" },
-];
-
-export function SiteHeader() {
-  const [open, setOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("inicio");
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ["inicio", "novedades", "carteras", "termos", "ofertas", "nosotros", "contacto"];
-      let active = "inicio";
-      
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (!element) continue;
-        
-        const rect = element.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        
-        // Si el elemento está visible en el viewport
-        if (rect.top < windowHeight && rect.bottom > 0) {
-          // Si está en la mitad superior del viewport o si es contacto
-=======
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { type Category } from "@/data/products";
@@ -75,31 +41,20 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
         const rect = element.getBoundingClientRect();
         const windowHeight = window.innerHeight;
         if (rect.top < windowHeight && rect.bottom > 0) {
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
           if (rect.top <= windowHeight / 2 || sectionId === "contacto") {
             active = sectionId;
           }
         }
       }
-<<<<<<< HEAD
-      
-      setActiveSection(active);
-=======
       setActiveScrollKey(active);
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
     };
 
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-<<<<<<< HEAD
-  }, []);
-=======
   }, [isHome, navItems]);
 
-  const activeKey = isHome
-    ? activeScrollKey
-    : (navItems.find((item) => item.href === pathname)?.key ?? "inicio");
+  const activeKey = isHome ? activeScrollKey : navItems.find((item) => item.href === pathname)?.key ?? "inicio";
 
   const linkFor = (item: (typeof navItems)[number]) => {
     const isActive = activeKey === item.key || (item.key === "inicio" && pathname === "/");
@@ -115,7 +70,6 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
       </li>
     );
   };
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-surface/90 backdrop-blur-md">
@@ -137,30 +91,13 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
           </svg>
         </button>
 
-<<<<<<< HEAD
-        <a
-          href="#inicio"
-=======
-        <Link
-          href="/"
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
-          className="mx-auto inline-flex flex-col items-center md:mx-0"
-          aria-label="Destello inicio"
-        >
+        <Link href="/" className="mx-auto inline-flex flex-col items-center md:mx-0" aria-label="Destello inicio">
           <BrandMark compact />
-<<<<<<< HEAD
-        </a>
-
-        <div className="flex items-center gap-2 sm:gap-3">
-          <a
-            href="#inicio"
-=======
         </Link>
 
         <div className="flex items-center gap-2 sm:gap-3">
           <a
             href={isHome ? "#inicio" : "/"}
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
             className="hidden items-center gap-2 text-ink-muted transition hover:text-gold md:inline-flex"
             aria-label="Buscar en el catálogo"
           >
@@ -182,11 +119,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
           </a>
           <ThemeToggle />
           <a
-<<<<<<< HEAD
-            href="#contacto"
-=======
             href={isHome ? "#contacto" : "/#contacto"}
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
             className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-ink transition hover:border-gold hover:text-gold"
             aria-label="Consultar catálogo"
           >
@@ -201,55 +134,20 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
         </div>
       </div>
 
-      <nav
-        className="hidden border-t border-border/50 md:block"
-        aria-label="Principal"
-      >
+      <nav className="hidden border-t border-border/50 md:block" aria-label="Principal">
         <ul className="mx-auto flex max-w-6xl items-center justify-center gap-8 px-6 py-3 font-serif text-sm tracking-[0.12em] text-ink uppercase">
-<<<<<<< HEAD
-          {navLinks.map((link) => {
-            const isActive = activeSection === link.href.slice(1);
-            return (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className={`transition ${isActive ? "text-gold font-semibold" : "hover:text-gold"}`}
-                >
-                  {link.label}
-                </a>
-              </li>
-            );
-          })}
-=======
           {navItems.map(linkFor)}
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
         </ul>
       </nav>
 
       {open ? (
-        <nav
-          id="mobile-nav"
-          className="border-t border-border bg-surface px-4 py-4 md:hidden"
-          aria-label="Móvil"
-        >
+        <nav id="mobile-nav" className="border-t border-border bg-surface px-4 py-4 md:hidden" aria-label="Móvil">
           <ul className="flex flex-col gap-3 font-serif tracking-[0.1em] text-ink uppercase">
-<<<<<<< HEAD
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="block py-1"
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </a>
-=======
             {navItems.map((item) => (
               <li key={item.key}>
                 <Link href={item.href} className="block py-1" onClick={() => setOpen(false)}>
                   {item.label}
                 </Link>
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
               </li>
             ))}
           </ul>
@@ -257,8 +155,4 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
       ) : null}
     </header>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 88bb355 (Agrega modo admin, descuentos y productos)
