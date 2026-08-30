@@ -23,10 +23,12 @@ export function DiscountCountdown({
   endsAt: string;
   compact?: boolean;
 }) {
+  const [mounted, setMounted] = useState(false);
   const [remaining, setRemaining] = useState(() => new Date(endsAt).getTime() - Date.now());
   const [finished, setFinished] = useState(() => remaining <= 0);
 
   useEffect(() => {
+    setMounted(true);
     const id = window.setInterval(() => {
       const value = new Date(endsAt).getTime() - Date.now();
       setRemaining(value);
@@ -35,7 +37,7 @@ export function DiscountCountdown({
     return () => window.clearInterval(id);
   }, [endsAt]);
 
-  if (finished) {
+  if (!mounted || finished) {
     return null;
   }
 
