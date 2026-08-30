@@ -14,20 +14,22 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
   const [activeScrollKey, setActiveScrollKey] = useState("inicio");
 
   const navItems = useMemo(() => {
+    const sectionHref = (id: string) => (isHome ? `#${id}` : `/catalogo/${id}`);
     return [
-      { key: "inicio", href: "/", label: "Inicio", sectionId: "inicio" },
-      { key: "novedades", href: "/catalogo/novedades", label: "Novedades" },
+      { key: "inicio", href: isHome ? "#inicio" : "/", label: "Inicio", sectionId: "inicio" },
+      { key: "novedades", href: isHome ? "#catalogo" : "/catalogo/novedades", label: "Novedades", sectionId: "novedades" },
+      { key: "mas-vendidos", href: sectionHref("mas-vendidos"), label: "Más vendidos", sectionId: "mas-vendidos" },
       ...categories.map((category) => ({
         key: category.id,
-        href: `/catalogo/${category.id}`,
+        href: sectionHref(category.id),
         label: category.label,
         sectionId: category.id,
       })),
-      { key: "ofertas", href: "/catalogo/ofertas", label: "Ofertas" },
+      { key: "ofertas", href: sectionHref("ofertas"), label: "Ofertas", sectionId: "ofertas" },
       { key: "nosotros", href: "/#nosotros", label: "Nosotros", sectionId: "nosotros" },
       { key: "contacto", href: "/#contacto", label: "Contacto", sectionId: "contacto" },
     ];
-  }, [categories]);
+  }, [categories, isHome]);
 
   useEffect(() => {
     if (!isHome) return;

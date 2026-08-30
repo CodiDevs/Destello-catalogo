@@ -1,6 +1,10 @@
 "use client";
 
+<<<<<<< HEAD
 import { isDiscountActive, type Category, type Product } from "@/data/products";
+=======
+import { isDiscountActive, topViewed, type Category, type Product } from "@/data/products";
+>>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 import { trackProductView } from "@/lib/trackView";
 import { useCallback, useState } from "react";
 import { ProductCard } from "./ProductCard";
@@ -91,17 +95,22 @@ export function ProductCatalog({
         ? products.filter(matchesNovedades)
         : slug === "ofertas"
           ? products.filter(matchesOfertas)
-          : products.filter((p) => p.category === slug);
+          : slug === "mas-vendidos"
+            ? topViewed(products)
+            : products.filter((p) => p.category === slug);
     const title =
       slug === "novedades"
         ? "Shop New"
         : slug === "ofertas"
           ? "Ofertas"
-          : categories.find((c) => c.id === slug)?.label ?? slug;
+          : slug === "mas-vendidos"
+            ? "Más vendidos"
+            : categories.find((c) => c.id === slug)?.label ?? slug;
     sections = [{ id: `cat-${slug}`, title, items }];
   } else {
     sections = [
       { id: "novedades", title: "Shop New", items: products.filter(matchesNovedades) },
+      { id: "mas-vendidos", title: "Más vendidos", items: topViewed(products) },
       ...categories.map((category) => ({
         id: category.id,
         title: category.label,

@@ -25,6 +25,13 @@ function slugify(input: string): string {
   return value || "item";
 }
 
+/** Extrae la ruta dentro del bucket desde una URL pública de Storage. */
+function storagePathFromUrl(url: string): string {
+  const marker = "/storage/v1/object/public/";
+  const index = url.indexOf(marker);
+  return index >= 0 ? url.slice(index + marker.length).split("?")[0] : "";
+}
+
 async function uniqueId(initial: string, table: string, column: string): Promise<string> {
   const base = slugify(initial);
   let candidate = base;
@@ -149,7 +156,7 @@ export async function saveProductAction(
     String(formData.get("discount_ends_at_iso") ?? formData.get("discount_ends_at") ?? "") || null,
   );
 
-  const deleteImage = formData.get("delete_image") === "1";
+  const legacyDeleteImage = formData.get("delete_image") === "1";
 
   try {
     await ensureAdmin(); // guard de clave de servicio
@@ -180,25 +187,75 @@ export async function saveProductAction(
       if (error) return { ok: false, error: `No se pudo crear: ${error.message}` };
     }
 
-    // Imagen opcional
-    const image = formData.get("imagen");
-    if (image instanceof File && image.size > 0) {
-      const ext = (image.name.split(".").pop() ?? "png").toLowerCase().replace(/[^a-z0-9]/g, "");
-      const path = `productos/${productId}/imagen.${ext || "png"}`;
-      const { error: uploadError } = await adminClient!.storage
-        .from("productos")
-        .upload(path, image, { upsert: true, contentType: image.type || "image/png" });
-      if (uploadError) {
-        return { ok: false, error: `No se pudo subir la imagen: ${uploadError.message}` };
+    // Imágenes por color (slots en JSON + archivos imagen_<i>)
+    const prevUrls: string[] = [];
+    if (existingId) {
+      const { data: prevRow } = await adminClient!
+        .from("products")
+        .select("images, image_url")
+        .eq("id", productId)
+        .maybeSingle();
+      if (prevRow) {
+        for (const image of Array.isArray(prevRow.images) ? prevRow.images : []) {
+          if (image && typeof (image as { url?: string }).url === "string") {
+            prevUrls.push((image as { url: string }).url);
+          }
+        }
+        if (prevRow.image_url) prevUrls.push(prevRow.image_url);
       }
-      await adminClient!.from("products").update({ image_url: adminImageUrl(path) }).eq("id", productId);
-    } else if (deleteImage) {
-      await adminClient!.from("products").update({ image_url: null }).eq("id", productId);
     }
+
+    const nextImages: { colorId: string | null; url: string }[] = [];
+    if (!legacyDeleteImage) {
+      const slotsRaw = String(formData.get("imagenes") ?? "");
+      if (slotsRaw) {
+        const slots = JSON.parse(slotsRaw) as {
+          colorId: string | null;
+          url: string;
+          hasFile?: boolean;
+        }[];
+        for (let index = 0; index < slots.length; index += 1) {
+          const slot = slots[index];
+          if (!slot) continue;
+          const file = formData.get(`imagen_${index}`);
+          if (file instanceof File && file.size > 0) {
+            const safe = slugify(slot.colorId ?? "general");
+            const random = Math.random().toString(36).slice(2, 8);
+            const ext = (file.name.split(".").pop() ?? "png")
+              .toLowerCase()
+              .replace(/[^a-z0-9]/g, "");
+            const path = `${productId}/${safe}-${random}.${ext || "png"}`;
+            const { error: uploadError } = await adminClient!.storage
+              .from("productos")
+              .upload(path, file, { upsert: true, contentType: file.type || "image/png" });
+            if (uploadError) {
+              return { ok: false, error: `No se pudo subir la imagen: ${uploadError.message}` };
+            }
+            nextImages.push({ colorId: slot.colorId, url: adminImageUrl(path) });
+          } else if (slot.url) {
+            nextImages.push({ colorId: slot.colorId, url: slot.url });
+          }
+        }
+      }
+    }
+
+    const nextUrls = new Set(nextImages.map((image) => image.url));
+    const removed = prevUrls.filter((url) => !nextUrls.has(url)).map(storagePathFromUrl).filter(Boolean);
+    if (removed.length > 0) {
+      await adminClient!.storage.from("productos").remove(removed);
+    }
+
+    await adminClient!
+      .from("products")
+      .update({ images: nextImages, image_url: nextImages[0]?.url ?? null })
+      .eq("id", productId);
 
     await refresh();
     return { ok: true };
   } catch (error) {
+    if (error instanceof SyntaxError) {
+      return { ok: false, error: "Datos de imágenes inválidos." };
+    }
     return { ok: false, error: error instanceof Error ? error.message : "Error al guardar producto" };
   }
 }
@@ -210,7 +267,7 @@ export async function deleteProductAction(formData: FormData): Promise<ActionRes
 
   try {
     await ensureAdmin();
-    await adminClient!.storage.from("productos").remove([`productos/${id}`]);
+    await adminClient!.storage.from("productos").remove([`productos/${id}`, id]);
     const { error } = await adminClient!.from("products").delete().eq("id", id);
     if (error) return { ok: false, error: `No se pudo eliminar: ${error.message}` };
     await refresh();

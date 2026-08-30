@@ -10,6 +10,7 @@ export function CatalogNav({
 }) {
   const items: { id: string; label: string; href: string }[] = [
     { id: "novedades", label: "Shop New", href: "/catalogo/novedades" },
+    { id: "mas-vendidos", label: "Más vendidos", href: "/catalogo/mas-vendidos" },
     ...categories.map((category) => ({
       id: category.id,
       label: category.label,

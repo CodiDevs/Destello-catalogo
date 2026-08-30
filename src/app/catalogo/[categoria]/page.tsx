@@ -17,7 +17,9 @@ export async function generateMetadata({ params }: { params: Promise<{ categoria
       ? "Shop New"
       : categoria === "ofertas"
         ? "Ofertas"
-        : (categories.find((c) => c.id === categoria)?.label ?? "Catálogo");
+        : categoria === "mas-vendidos"
+          ? "Más vendidos"
+          : (categories.find((c) => c.id === categoria)?.label ?? "Catálogo");
   return { title: `${title} · Destello` };
 }
 

@@ -4,27 +4,37 @@ import { SparkleIcon } from "./SparkleIcon";
 export function ProductVisual({
   product,
   accent,
+  image,
   className = "",
   showBadge = true,
 }: {
   product: Product;
   accent?: string;
+  image?: string;
   className?: string;
   showBadge?: boolean;
 }) {
   const color = accent ?? product.accent;
   const discounted = isDiscountActive(product);
+<<<<<<< HEAD
+=======
+  const imageSrc = image ?? product.imageUrl;
+>>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 
   return (
     <div
       className={`relative aspect-square overflow-hidden pattern-${product.pattern} ${className}`}
       style={{ backgroundColor: color }}
     >
+<<<<<<< HEAD
       {product.imageUrl ? (
+=======
+      {imageSrc ? (
+>>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
         // Los productos usan fotos reales del almacenamiento; next/image no conviene para objetos de catálogo responsivo.
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={product.imageUrl}
+          src={imageSrc}
           alt={product.name}
           className="absolute inset-0 h-full w-full object-cover"
           loading="lazy"

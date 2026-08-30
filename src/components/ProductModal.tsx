@@ -4,6 +4,7 @@ import {
   categoryLabel,
   discountedPrice,
   formatPrice,
+  imageForColor,
   isDiscountActive,
   type Category,
   type Product,
@@ -47,6 +48,10 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
     `Hola Destello, me interesa consultar: ${product.name}${colorLabel}`,
   );
   const discounted = isDiscountActive(product);
+<<<<<<< HEAD
+=======
+  const displayImage = imageForColor(product, selectedColor?.id);
+>>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 
   return (
     <div
@@ -86,6 +91,7 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
           <ProductVisual
             product={product}
             accent={accent}
+            image={displayImage}
             className="rounded-none"
             showBadge
           />
