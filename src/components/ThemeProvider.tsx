@@ -22,23 +22,6 @@ function applyTheme(theme: Theme) {
   document.documentElement.setAttribute("data-theme", theme);
 }
 
-<<<<<<< HEAD
-function initialTheme(): Theme {
-  if (typeof document === "undefined") return "light";
-  const fromAttribute = document.documentElement.getAttribute("data-theme");
-  return fromAttribute === "dark" ? "dark" : "light";
-}
-
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(initialTheme);
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem("destello-theme") as Theme | null;
-    const preferred =
-      stored ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    setTheme(preferred);
-    applyTheme(preferred);
-=======
 function readStoredTheme(): Theme {
   if (typeof window === "undefined") return "light";
   try {
@@ -65,7 +48,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
   }, []);
 
   const toggleTheme = useCallback(() => {
@@ -90,8 +72,4 @@ export function useTheme() {
     throw new Error("useTheme must be used within ThemeProvider");
   }
   return ctx;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)

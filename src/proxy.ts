@@ -3,7 +3,7 @@ import { SESSION_COOKIE, verifySessionToken } from "@/lib/admin/session";
 
 // Protege la vista de administrador: solo vendedores con sesión válida.
 // El comprador nunca llega aquí (los enlaces del panel no están a la vista).
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isLogin = pathname === "/admin/login";

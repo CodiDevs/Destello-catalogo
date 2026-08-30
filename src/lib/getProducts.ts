@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { type PatternId, type Product, type ProductColor } from "@/data/products";
-=======
 import { type PatternId, type Product, type ProductColor, type ProductImage } from "@/data/products";
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 import { supabase } from "@/lib/supabase";
 
 type ProductRow = {
@@ -42,19 +38,12 @@ function mapRow(row: ProductRow): Product {
     description: row.description,
     details: row.details ?? [],
     colors: row.colors ?? undefined,
-<<<<<<< HEAD
-=======
     images: images.length > 0 ? images : undefined,
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
     discountPercent: row.discount_percent ?? undefined,
     discountEndsAt: row.discount_ends_at ?? undefined,
     views: row.views,
     sales: row.sales,
-<<<<<<< HEAD
-    imageUrl: row.image_url ?? undefined,
-=======
     imageUrl: images[0]?.url ?? undefined,
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
   };
 }
 
@@ -74,32 +63,17 @@ export async function getProducts(options: { category?: string } = {}): Promise<
   const legacySelect =
     "id, name, price, category, badge, accent, pattern, description, details, colors, discount_percent, discount_ends_at, views, sales, image_url";
 
-<<<<<<< HEAD
-  let query = supabase.from("products").select(select).order("created_at", { ascending: true });
-
-  if (options.category) {
-    query = query.eq("category", options.category);
-=======
-  async function query(selectList: string) {
+async function query(selectList: string) {
     let query = supabase!.from("products").select(selectList).order("created_at", { ascending: true });
     if (options.category) {
       query = query.eq("category", options.category);
     }
     const { data, error } = await query;
     return { data: data as ProductRow[] | null, error };
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
   }
 
   let result = await query(select);
 
-<<<<<<< HEAD
-  if (error) {
-    console.error("[supabase] Error al leer products:", error.message);
-    return [];
-  }
-
-  return (data ?? []).map(mapRow);
-=======
   // Fallback: si la columna `images` aún no está migrada (42703), se lee el
   // modelo anterior solo con `image_url` para no romper la tienda.
   if (result.error && /images/i.test(result.error.message)) {
@@ -112,5 +86,4 @@ export async function getProducts(options: { category?: string } = {}): Promise<
   }
 
   return (result.data ?? []).map(mapRow);
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 }

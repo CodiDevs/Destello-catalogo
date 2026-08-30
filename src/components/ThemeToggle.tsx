@@ -9,7 +9,12 @@ export function ThemeToggle() {
   const isDark = theme === "dark";
 
   useEffect(() => {
+<<<<<<< HEAD
     setMounted(true);
+=======
+    const raf = window.requestAnimationFrame(() => setMounted(true));
+    return () => window.cancelAnimationFrame(raf);
+>>>>>>> 9a6b054 (Se soluciono bug visual en el celular junto a un bug en el apartado admin)
   }, []);
 
   if (!mounted) {

@@ -28,13 +28,20 @@ export function DiscountCountdown({
   const [finished, setFinished] = useState(() => remaining <= 0);
 
   useEffect(() => {
+<<<<<<< HEAD
     setMounted(true);
+=======
+    const raf = window.requestAnimationFrame(() => setMounted(true));
+>>>>>>> 9a6b054 (Se soluciono bug visual en el celular junto a un bug en el apartado admin)
     const id = window.setInterval(() => {
       const value = new Date(endsAt).getTime() - Date.now();
       setRemaining(value);
       setFinished(value <= 0);
     }, 1000);
-    return () => window.clearInterval(id);
+    return () => {
+      window.clearInterval(id);
+      window.cancelAnimationFrame(raf);
+    };
   }, [endsAt]);
 
   if (!mounted || finished) {

@@ -1,10 +1,6 @@
 "use client";
 
-<<<<<<< HEAD
-import { isDiscountActive, type Category, type Product } from "@/data/products";
-=======
 import { isDiscountActive, topViewed, type Category, type Product } from "@/data/products";
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 import { trackProductView } from "@/lib/trackView";
 import { useCallback, useState } from "react";
 import { ProductCard } from "./ProductCard";

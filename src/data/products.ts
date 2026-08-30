@@ -12,14 +12,11 @@ export type ProductColor = {
   hex: string;
 };
 
-<<<<<<< HEAD
-=======
 export type ProductImage = {
   colorId?: string | null;
   url: string;
 };
 
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 export type Category = {
   id: string;
   label: string;
@@ -38,10 +35,7 @@ export type Product = {
   description: string;
   details: string[];
   colors?: ProductColor[];
-<<<<<<< HEAD
-=======
   images?: ProductImage[];
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
   discountPercent?: number;
   discountEndsAt?: string;
   views: number;
@@ -49,11 +43,7 @@ export type Product = {
   imageUrl?: string;
 };
 
-<<<<<<< HEAD
-export const derivedCatalogSlugs = ["novedades", "ofertas"] as const;
-=======
 export const derivedCatalogSlugs = ["novedades", "ofertas", "mas-vendidos"] as const;
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 
 export type DerivedCatalogSlug = (typeof derivedCatalogSlugs)[number];
 
@@ -94,8 +84,6 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 
-<<<<<<< HEAD
-=======
 /** Primera imagen del producto (miniatura principal), o undefined si no tiene. */
 export function mainImage(product: Pick<Product, "images" | "imageUrl">): string | undefined {
   return product.images?.[0]?.url ?? product.imageUrl;
@@ -128,7 +116,6 @@ export function topViewed(products: Product[], limit: number = BEST_SELLERS_LIMI
   return [...products].sort((a, b) => b.views - a.views).slice(0, limit);
 }
 
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 export function categoryLabel(id: string, categories: Category[]): string {
   return categories.find((c) => c.id === id)?.label ?? id;
 }

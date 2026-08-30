@@ -48,14 +48,11 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
     `Hola Destello, me interesa consultar: ${product.name}${colorLabel}`,
   );
   const discounted = isDiscountActive(product);
-<<<<<<< HEAD
-=======
   const displayImage = imageForColor(product, selectedColor?.id);
->>>>>>> 4658474 (Se agrego los mas vendidos y poder agregar productos de diferente color)
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4"
       role="presentation"
     >
       <button
@@ -69,16 +66,16 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative z-10 flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl border border-border bg-surface-elevated shadow-[0_-8px_40px_rgba(42,31,36,0.25)] sm:max-h-[90vh] sm:rounded-2xl"
+        className="relative z-10 flex max-h-[calc(100dvh-1.5rem)] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-surface-elevated shadow-[0_-8px_40px_rgba(42,31,36,0.25)] sm:max-h-[calc(100dvh-2rem)]"
       >
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
-          <p className="font-serif text-xs tracking-[0.14em] text-ink-muted uppercase">
+          <p className="font-serif min-w-0 truncate text-xs tracking-[0.14em] text-ink-muted uppercase">
             {categoryLabel(product.category, categories)}
           </p>
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-ink transition hover:border-gold hover:text-gold"
+            className="ml-2 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-ink transition hover:border-gold hover:text-gold"
             aria-label="Cerrar detalle"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -87,7 +84,7 @@ export function ProductModal({ product, categories, onClose }: ProductModalProps
           </button>
         </div>
 
-        <div className="product-modal-scroll overflow-y-auto overscroll-contain">
+        <div className="product-modal-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain">
           <ProductVisual
             product={product}
             accent={accent}
